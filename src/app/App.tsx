@@ -5,13 +5,13 @@ import { ImageWithFallback } from './components/figma/ImageWithFallback';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import logo from 'figma:asset/21907fc2bd55e5c719da2d178be4eb942c6efa46.png';
-import arjunImage1 from 'figma:asset/e25bfc74380740af00076d8c728bf8b6ac670ff6.png';
-import arjunImage2 from 'figma:asset/eea01c541d182f2ec65f93e947fb3e2f667a5b69.png';
-import arjunImage3 from 'figma:asset/f8ffae8e3d7922ae2f5b64ef8e74163d0cf66cda.png';
-import vivahImage from 'figma:asset/b51118a061c64a6bb8db2ad110afe4bdd1e0d692.png';
-import tholubommalataImage from 'figma:asset/28127803f97cc25a849b3b3ee327c32e9efd6d62.png';
-import shaadiTycoonImage from 'figma:asset/529b7b51ad90b1e676b55ffae79fb47795b9d9f4.png';
+import logo from "../assets/21907fc2bd55e5c719da2d178be4eb942c6efa46.png";
+import arjunImage1 from "../assets/2e5bfc74380740af00076d8c728bf8b6ac670ff6.png";
+import arjunImage2 from "../assets/eea01c541d182f2ec65f93e947fb3e2f667a5b69.png";
+import arjunImage3 from "../assets/f8ffae8e3d7922ae2f5b64ef8e74163d0cf66cda.png";
+import vivahImage from "../assets/b51118a061c64a6bb8db2ad110afe4bdd1e0d692.png";
+import tholubommalataImage from "../assets/28127803f97cc25a849b3b3ee327c32e9efd6d62.png";
+import shaadiTycoonImage from "../assets/529b7b51ad90b1e676b55ffae79fb47795b9d9f4.png";
 
 export default function App() {
   const [isScrolled, setIsScrolled] = useState(false);
