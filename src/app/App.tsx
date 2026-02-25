@@ -6,7 +6,7 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import logo from "../assets/21907fc2bd55e5c719da2d178be4eb942c6efa46.png";
-import arjunImage1 from "../assets/2e5bfc74380740af00076d8c728bf8b6ac670ff6.png";
+import arjunImage1 from "../assets/e25bfc74380740af00076d8c728bf8b6ac670ff6.png";
 import arjunImage2 from "../assets/eea01c541d182f2ec65f93e947fb3e2f667a5b69.png";
 import arjunImage3 from "../assets/f8ffae8e3d7922ae2f5b64ef8e74163d0cf66cda.png";
 import vivahImage from "../assets/b51118a061c64a6bb8db2ad110afe4bdd1e0d692.png";
