@@ -1,0 +1,71 @@
+/* Custom styles for Arjun carousel */
+.arjun-carousel .slick-dots {
+  bottom: 20px;
+}
+
+.arjun-carousel .slick-dots li button:before {
+  color: #C6A45B;
+  opacity: 0.5;
+  font-size: 10px;
+}
+
+.arjun-carousel .slick-dots li.slick-active button:before {
+  color: #C6A45B;
+  opacity: 1;
+}
+
+.arjun-carousel .slick-prev,
+.arjun-carousel .slick-next {
+  z-index: 10;
+  width: 40px;
+  height: 40px;
+}
+
+.arjun-carousel .slick-prev {
+  left: 20px;
+}
+
+.arjun-carousel .slick-next {
+  right: 20px;
+}
+
+.arjun-carousel .slick-prev:before,
+.arjun-carousel .slick-next:before {
+  display: none;
+}
+
+/* Custom styles for Pocket carousel */
+.pocket-carousel .slick-dots {
+  bottom: 20px;
+}
+
+.pocket-carousel .slick-dots li button:before {
+  color: #F59E0B;
+  opacity: 0.5;
+  font-size: 10px;
+}
+
+.pocket-carousel .slick-dots li.slick-active button:before {
+  color: #F59E0B;
+  opacity: 1;
+}
+
+.pocket-carousel .slick-prev,
+.pocket-carousel .slick-next {
+  z-index: 10;
+  width: 40px;
+  height: 40px;
+}
+
+.pocket-carousel .slick-prev {
+  left: 20px;
+}
+
+.pocket-carousel .slick-next {
+  right: 20px;
+}
+
+.pocket-carousel .slick-prev:before,
+.pocket-carousel .slick-next:before {
+  display: none;
+}

@@ -1,7 +1,7 @@
 
-  # Aranya_websiteDemo
+  # Cinematic Game Studio Website
 
-  This is a code bundle for Aranya_websiteDemo. The original project is available at https://www.figma.com/design/5PW0vtfVWiunN5k36in3aA/Aranya_websiteDemo.
+  This is a code bundle for Cinematic Game Studio Website. The original project is available at https://www.figma.com/design/kkEQBgVXVOakZZEmlWeqBC/Cinematic-Game-Studio-Website.
 
   ## Running the code
 

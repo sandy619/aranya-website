@@ -1,658 +1,865 @@
-import { motion, useScroll, useTransform } from 'motion/react';
-import { ChevronDown, Send } from 'lucide-react';
-import { useState, useRef } from 'react';
+import { useState, useEffect } from 'react';
+import { motion } from 'motion/react';
+import { ChevronDown, Send, Menu, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { ImageWithFallback } from './components/figma/ImageWithFallback';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import logo from 'figma:asset/21907fc2bd55e5c719da2d178be4eb942c6efa46.png';
+import arjunImage1 from 'figma:asset/e25bfc74380740af00076d8c728bf8b6ac670ff6.png';
+import arjunImage2 from 'figma:asset/eea01c541d182f2ec65f93e947fb3e2f667a5b69.png';
+import arjunImage3 from 'figma:asset/f8ffae8e3d7922ae2f5b64ef8e74163d0cf66cda.png';
+import vivahImage from 'figma:asset/b51118a061c64a6bb8db2ad110afe4bdd1e0d692.png';
+import tholubommalataImage from 'figma:asset/28127803f97cc25a849b3b3ee327c32e9efd6d62.png';
+import shaadiTycoonImage from 'figma:asset/529b7b51ad90b1e676b55ffae79fb47795b9d9f4.png';
 
-// Hero Section Component
-function HeroSection() {
-  const { scrollY } = useScroll();
-  const opacity = useTransform(scrollY, [0, 300], [1, 0]);
-  const scale = useTransform(scrollY, [0, 300], [1, 1.2]);
+export default function App() {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [gamesDropdownOpen, setGamesDropdownOpen] = useState(false);
+  const [offeringsDropdownOpen, setOfferingsDropdownOpen] = useState(false);
 
-  const scrollToForest = () => {
-    document.getElementById('forest')?.scrollIntoView({ behavior: 'smooth' });
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+      setMobileMenuOpen(false);
+      setGamesDropdownOpen(false);
+      setOfferingsDropdownOpen(false);
+    }
   };
 
-  return (
-    <section className="relative h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Image with Parallax */}
-      <motion.div 
-        style={{ scale, opacity }}
-        className="absolute inset-0 z-0"
-      >
-        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/80 z-10" />
-        <ImageWithFallback
-          src="https://images.unsplash.com/photo-1713545396351-b848e4707cb2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkYXJrJTIwbWlzdHklMjBmb3Jlc3QlMjBpbmRpYSUyMGF0bW9zcGhlcmljfGVufDF8fHx8MTc3MTA5MzU5NHww&ixlib=rb-4.1.0&q=80&w=1080"
-          alt="Misty Forest"
-          className="w-full h-full object-cover blur-sm"
-        />
-      </motion.div>
+  const navLinks = [
+    { label: 'The Forest', id: 'forest' },
+    { label: 'Philosophy', id: 'about' },
+    { label: 'Contact', id: 'contact' },
+  ];
 
-      {/* Content */}
-      <motion.div 
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, delay: 0.3 }}
-        className="relative z-20 text-center px-6 max-w-5xl mx-auto"
-      >
-        <motion.h1 
-          className="mb-6"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.5 }}
-        >
-          Aranya Interactive
-        </motion.h1>
-        
-        <motion.p 
-          className="text-3xl md:text-4xl mb-6 italic"
-          style={{ color: '#C6A45B' }}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.7 }}
-        >
-          A Forest of Stories.
-        </motion.p>
-        
-        <motion.p 
-          className="text-lg md:text-xl mb-12 max-w-2xl mx-auto opacity-80"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.9 }}
-        >
-          We build culturally resonant games across platforms.
-        </motion.p>
-        
-        <motion.button
-          onClick={scrollToForest}
-          className="px-8 py-4 border-2 rounded-lg transition-all duration-300 hover:scale-105"
-          style={{ 
-            borderColor: '#C6A45B',
-            color: '#C6A45B',
-            backgroundColor: 'rgba(198, 164, 91, 0.1)'
-          }}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 1.1 }}
-          whileHover={{ backgroundColor: 'rgba(198, 164, 91, 0.2)' }}
-        >
-          Explore the Forest
-        </motion.button>
-      </motion.div>
+  const games = [
+    { label: 'Apex', id: 'apex', icon: '🐅' },
+    { label: 'Pocket', id: 'pocket', icon: '🐿' },
+  ];
 
-      {/* Scroll Indicator */}
-      <motion.div
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20"
-        animate={{ y: [0, 10, 0] }}
-        transition={{ duration: 2, repeat: Infinity }}
-      >
-        <ChevronDown size={32} style={{ color: '#C6A45B' }} />
-      </motion.div>
-    </section>
-  );
-}
-
-// Division Card Component
-interface DivisionCardProps {
-  icon: string;
-  title: string;
-  description: string;
-  index: number;
-}
-
-function DivisionCard({ icon, title, description, index }: DivisionCardProps) {
-  const [isHovered, setIsHovered] = useState(false);
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 50 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: index * 0.1 }}
-      viewport={{ once: true }}
-      onHoverStart={() => setIsHovered(true)}
-      onHoverEnd={() => setIsHovered(false)}
-      className="relative p-8 rounded-xl border transition-all duration-300 cursor-pointer group"
-      style={{
-        backgroundColor: isHovered ? 'rgba(198, 164, 91, 0.05)' : 'rgba(14, 47, 38, 0.2)',
-        borderColor: isHovered ? '#C6A45B' : 'rgba(198, 164, 91, 0.2)',
-        backdropFilter: 'blur(10px)'
-      }}
-    >
-      {/* Glow Effect */}
-      {isHovered && (
-        <motion.div
-          className="absolute inset-0 rounded-xl"
-          style={{
-            background: 'radial-gradient(circle at center, rgba(198, 164, 91, 0.1) 0%, transparent 70%)',
-          }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.3 }}
-        />
-      )}
-
-      <div className="relative z-10">
-        <div className="text-5xl mb-4">{icon}</div>
-        <h3 className="mb-3">{title}</h3>
-        <p className="opacity-70 leading-relaxed">{description}</p>
-      </div>
-    </motion.div>
-  );
-}
-
-// Forest Divisions Section
-function ForestDivisions() {
-  const divisions = [
-    {
-      icon: '🐅',
-      title: 'Aranya Apex',
-      description: 'Premium PC & Console Titles — Crafting immersive AAA experiences that blend cutting-edge technology with deep cultural narratives.',
-    },
-    {
-      icon: '🐿',
-      title: 'Aranya Pocket',
-      description: 'Mobile Cultural Experiences — Bringing the richness of Indian traditions to mobile platforms with accessible, engaging gameplay.',
-    },
-    {
-      icon: '🦉',
-      title: 'Aranya Works',
-      description: 'Porting & Co-Development Services — Expert technical solutions for studios looking to expand their reach across platforms.',
-    },
-    {
-      icon: '🐘',
-      title: 'Aranya Legacy',
-      description: 'Publishing & Long-Term IP — Nurturing and preserving game worlds that grow beyond single releases into lasting franchises.',
-    },
+  const offerings = [
+    { label: 'Works', id: 'works', icon: '🦉' },
+    { label: 'Guild', id: 'guild', icon: '🐘' },
   ];
 
   return (
-    <section id="forest" className="relative py-32 px-6">
-      <div className="absolute inset-0 bg-gradient-to-b from-black via-[#0a0a0a] to-black opacity-95" />
-      
-      <div className="relative z-10 max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="text-center mb-20"
-        >
-          <h2 className="mb-6">The Forest</h2>
-          <p className="text-xl max-w-3xl mx-auto opacity-80">
-            Four distinct paths through Aranya, each representing our commitment to excellence and cultural authenticity.
-          </p>
-        </motion.div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {divisions.map((division, index) => (
-            <DivisionCard key={index} {...division} index={index} />
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// Aranya Apex Section
-function ApexSection() {
-  return (
-    <section className="relative py-32 px-6 overflow-hidden">
-      <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-black via-[#0E2F26]/30 to-black z-10" />
-        <ImageWithFallback
-          src="https://images.unsplash.com/photo-1558641445-766a7c7036d3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmb3Jlc3QlMjBtb3JuaW5nJTIwbGlnaHQlMjByYXlzJTIwbWlzdHxlbnwxfHx8fDE3NzEwOTM1OTV8MA&ixlib=rb-4.1.0&q=80&w=1080"
-          alt="Forest light rays"
-          className="w-full h-full object-cover blur-md opacity-30"
-        />
-      </div>
-
-      <div className="relative z-20 max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, x: -50 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-        >
-          <div className="inline-block px-4 py-2 rounded-full mb-6" style={{ backgroundColor: 'rgba(198, 164, 91, 0.1)', borderColor: '#C6A45B', border: '1px solid' }}>
-            <span style={{ color: '#C6A45B' }}>🐅 ARANYA APEX</span>
-          </div>
-          
-          <h2 className="mb-8 max-w-3xl">Premium PC & Console Titles</h2>
-          
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h3 className="mb-4" style={{ color: '#C6A45B' }}>Featured: Arjun</h3>
-              <p className="text-lg mb-6 leading-relaxed opacity-90">
-                A dark narrative-driven action adventure following the journey of a warrior torn between duty and destiny. 
-                Set in a reimagined ancient India, Arjun weaves together mythology, moral complexity, and visceral combat.
-              </p>
-              <p className="mb-6 opacity-80">
-                Built on Unreal Engine 5, featuring photorealistic environments, advanced motion capture, and a deeply branching narrative system that responds to player choices.
-              </p>
-              <div className="flex gap-4">
-                <span className="px-4 py-2 rounded-lg text-sm" style={{ backgroundColor: 'rgba(14, 47, 38, 0.5)', color: '#E8E4DA' }}>
-                  Action RPG
-                </span>
-                <span className="px-4 py-2 rounded-lg text-sm" style={{ backgroundColor: 'rgba(14, 47, 38, 0.5)', color: '#E8E4DA' }}>
-                  Single Player
-                </span>
-                <span className="px-4 py-2 rounded-lg text-sm" style={{ backgroundColor: 'rgba(14, 47, 38, 0.5)', color: '#E8E4DA' }}>
-                  PC / Console
-                </span>
-              </div>
-            </div>
+    <div className="min-h-screen bg-[#0E2F26] text-[#E8E4DA]" style={{ fontFamily: 'Inter, sans-serif' }}>
+      {/* Fixed Header */}
+      <header
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b bg-[rgba(14,47,38,0.95)] backdrop-blur-md border-[rgba(198,164,91,0.2)] ${
+          isScrolled ? 'shadow-lg' : ''
+        }`}
+      >
+        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <img src={logo} alt="Aranya Interactive Logo" className="w-10 h-10" />
             
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="relative aspect-video rounded-xl overflow-hidden"
-              style={{ boxShadow: '0 20px 60px rgba(198, 164, 91, 0.3)' }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-[#0E2F26] to-[#1a3a2f] flex items-center justify-center">
-                <span className="text-6xl">🐅</span>
-              </div>
-            </motion.div>
           </div>
-        </motion.div>
-      </div>
-    </section>
-  );
-}
 
-// Aranya Pocket Section
-function PocketSection() {
-  return (
-    <section className="relative py-32 px-6 overflow-hidden">
-      <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-black via-[#1a3a2f]/20 to-black z-10" />
-        <ImageWithFallback
-          src="https://images.unsplash.com/photo-1702943546945-9ea68200e74d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxpbmRpYW4lMjB3ZWRkaW5nJTIwY2VsZWJyYXRpb24lMjBjb2xvcmZ1bHxlbnwxfHx8fDE3NzEwOTM1OTV8MA&ixlib=rb-4.1.0&q=80&w=1080"
-          alt="Indian Wedding"
-          className="w-full h-full object-cover blur-lg opacity-20"
-        />
-      </div>
-
-      <div className="relative z-20 max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, x: 50 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-        >
-          <div className="inline-block px-4 py-2 rounded-full mb-6" style={{ backgroundColor: 'rgba(245, 158, 11, 0.1)', borderColor: '#F59E0B', border: '1px solid' }}>
-            <span style={{ color: '#F59E0B' }}>🐿 ARANYA POCKET</span>
-          </div>
-          
-          <h2 className="mb-8 max-w-3xl">Mobile Cultural Experiences</h2>
-          
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="relative aspect-[9/16] max-w-sm mx-auto rounded-3xl overflow-hidden"
-              style={{ boxShadow: '0 20px 60px rgba(245, 158, 11, 0.3)' }}
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center gap-8">
+            <button
+              onClick={() => scrollToSection('forest')}
+              className="text-[#E8E4DA] hover:text-[#C6A45B] transition-colors duration-200"
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-[#F59E0B] to-[#d97706] flex items-center justify-center">
-                <span className="text-7xl">🐿</span>
-              </div>
-            </motion.div>
-
-            <div>
-              <h3 className="mb-4" style={{ color: '#F59E0B' }}>Indian Wedding Planner Simulator</h3>
-              <p className="text-lg mb-6 leading-relaxed opacity-90">
-                Experience the joy, chaos, and magic of planning authentic Indian weddings. From coordinating with the pandit 
-                to managing family dynamics, every decision shapes your couple's special day.
-              </p>
-              <p className="mb-6 opacity-80">
-                Features real regional customs, traditional music, mini-games for rituals, and a heartfelt story that celebrates 
-                the diversity of Indian wedding traditions across cultures and communities.
-              </p>
-              <div className="flex gap-4 flex-wrap">
-                <span className="px-4 py-2 rounded-lg text-sm" style={{ backgroundColor: 'rgba(245, 158, 11, 0.2)', color: '#F59E0B' }}>
-                  Simulation
-                </span>
-                <span className="px-4 py-2 rounded-lg text-sm" style={{ backgroundColor: 'rgba(245, 158, 11, 0.2)', color: '#F59E0B' }}>
-                  Casual
-                </span>
-                <span className="px-4 py-2 rounded-lg text-sm" style={{ backgroundColor: 'rgba(245, 158, 11, 0.2)', color: '#F59E0B' }}>
-                  iOS / Android
-                </span>
-              </div>
+              The Forest
+            </button>
+            
+            {/* Games Dropdown */}
+            <div className="relative">
+              <button
+                onClick={() => setGamesDropdownOpen(!gamesDropdownOpen)}
+                className="text-[#E8E4DA] hover:text-[#C6A45B] transition-colors duration-200 flex items-center gap-1"
+              >
+                Games
+                <ChevronDown size={16} className={`transition-transform duration-200 ${gamesDropdownOpen ? 'rotate-180' : ''}`} />
+              </button>
+              
+              {gamesDropdownOpen && (
+                <div className="absolute top-full right-0 mt-2 w-48 bg-[rgba(14,47,38,0.98)] backdrop-blur-md border border-[rgba(198,164,91,0.3)] rounded-lg shadow-xl overflow-hidden">
+                  {games.map((game) => (
+                    <button
+                      key={game.id}
+                      onClick={() => scrollToSection(game.id)}
+                      className="w-full px-4 py-3 text-left text-[#E8E4DA] hover:bg-[rgba(198,164,91,0.2)] hover:text-[#C6A45B] transition-colors duration-200 flex items-center gap-2"
+                    >
+                      <span>{game.icon}</span>
+                      <span>{game.label}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
-          </div>
-        </motion.div>
-      </div>
-    </section>
-  );
-}
 
-// Aranya Works Section
-function WorksSection() {
-  return (
-    <section className="relative py-32 px-6">
-      <div className="absolute inset-0 bg-[#0a0a0a]" />
-      
-      <div className="relative z-10 max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <div className="inline-block px-4 py-2 rounded-full mb-6" style={{ backgroundColor: 'rgba(198, 164, 91, 0.1)', borderColor: '#C6A45B', border: '1px solid' }}>
-            <span style={{ color: '#C6A45B' }}>🦉 ARANYA WORKS</span>
-          </div>
-          
-          <h2 className="mb-8">Porting & Co-Development Services</h2>
-          <p className="text-xl max-w-3xl mx-auto opacity-80">
-            Expert technical partnership for studios expanding their reach.
-          </p>
-        </motion.div>
+            {/* Offerings Dropdown */}
+            <div className="relative">
+              <button
+                onClick={() => setOfferingsDropdownOpen(!offeringsDropdownOpen)}
+                className="text-[#E8E4DA] hover:text-[#C6A45B] transition-colors duration-200 flex items-center gap-1"
+              >
+                Offerings
+                <ChevronDown size={16} className={`transition-transform duration-200 ${offeringsDropdownOpen ? 'rotate-180' : ''}`} />
+              </button>
+              
+              {offeringsDropdownOpen && (
+                <div className="absolute top-full right-0 mt-2 w-48 bg-[rgba(14,47,38,0.98)] backdrop-blur-md border border-[rgba(198,164,91,0.3)] rounded-lg shadow-xl overflow-hidden">
+                  {offerings.map((offering) => (
+                    <button
+                      key={offering.id}
+                      onClick={() => scrollToSection(offering.id)}
+                      className="w-full px-4 py-3 text-left text-[#E8E4DA] hover:bg-[rgba(198,164,91,0.2)] hover:text-[#C6A45B] transition-colors duration-200 flex items-center gap-2"
+                    >
+                      <span>{offering.icon}</span>
+                      <span>{offering.label}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {[
-            {
-              title: 'Platform Porting',
-              description: 'Seamless transitions between PC, console, and mobile platforms with optimized performance.',
-            },
-            {
-              title: 'Co-Development',
-              description: 'Collaborative production support from pre-production through launch and beyond.',
-            },
-            {
-              title: 'Technical Optimization',
-              description: 'Performance tuning, graphics optimization, and platform-specific enhancements.',
-            },
-          ].map((service, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              viewport={{ once: true }}
-              className="p-8 rounded-xl border"
-              style={{
-                backgroundColor: 'rgba(14, 47, 38, 0.2)',
-                borderColor: 'rgba(198, 164, 91, 0.2)',
-              }}
+            <button
+              onClick={() => scrollToSection('about')}
+              className="text-[#E8E4DA] hover:text-[#C6A45B] transition-colors duration-200"
             >
-              <h4 className="mb-4" style={{ color: '#C6A45B' }}>{service.title}</h4>
-              <p className="opacity-80">{service.description}</p>
-            </motion.div>
-          ))}
+              Philosophy
+            </button>
+            
+            <button
+              onClick={() => scrollToSection('contact')}
+              className="text-[#E8E4DA] hover:text-[#C6A45B] transition-colors duration-200"
+            >
+              Contact
+            </button>
+          </nav>
+
+          {/* Mobile Menu Button */}
+          <button className="md:hidden text-[#C6A45B]" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
         </div>
-      </div>
-    </section>
-  );
-}
 
-// Aranya Legacy Section
-function LegacySection() {
-  return (
-    <section className="relative py-32 px-6 overflow-hidden">
-      <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-gradient-to-b from-black via-[#0E2F26]/20 to-black z-10" />
-        <ImageWithFallback
-          src="https://images.unsplash.com/photo-1759520582331-8b62a819a452?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxlbGVwaGFudCUyMHNpbGhvdWV0dGUlMjBwZWFjZWZ1bCUyMG5hdHVyZXxlbnwxfHx8fDE3NzEwOTM1OTV8MA&ixlib=rb-4.1.0&q=80&w=1080"
-          alt="Elephant in nature"
-          className="w-full h-full object-cover blur-md opacity-20"
-        />
-      </div>
+        {/* Mobile Menu Dropdown */}
+        {mobileMenuOpen && (
+          <div className="md:hidden bg-[rgba(14,47,38,0.98)] backdrop-blur-md border-t border-[rgba(198,164,91,0.2)]">
+            <nav className="flex flex-col px-6 py-4">
+              <button
+                onClick={() => scrollToSection('forest')}
+                className="text-[#E8E4DA] hover:text-[#C6A45B] py-3 text-left transition-colors duration-200"
+              >
+                The Forest
+              </button>
+              
+              {/* Mobile Games Section */}
+              <div className="border-t border-[rgba(198,164,91,0.2)] mt-2 pt-2">
+                <button
+                  onClick={() => setGamesDropdownOpen(!gamesDropdownOpen)}
+                  className="text-[#E8E4DA] hover:text-[#C6A45B] py-3 text-left transition-colors duration-200 flex items-center gap-1 w-full"
+                >
+                  Games
+                  <ChevronDown size={16} className={`transition-transform duration-200 ${gamesDropdownOpen ? 'rotate-180' : ''}`} />
+                </button>
+                
+                {gamesDropdownOpen && (
+                  <div className="pl-4">
+                    {games.map((game) => (
+                      <button
+                        key={game.id}
+                        onClick={() => scrollToSection(game.id)}
+                        className="text-[#E8E4DA] hover:text-[#C6A45B] py-2 text-left transition-colors duration-200 flex items-center gap-2 w-full"
+                      >
+                        <span>{game.icon}</span>
+                        <span>{game.label}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
 
-      <div className="relative z-20 max-w-5xl mx-auto text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-        >
-          <div className="inline-block px-4 py-2 rounded-full mb-6" style={{ backgroundColor: 'rgba(198, 164, 91, 0.1)', borderColor: '#C6A45B', border: '1px solid' }}>
-            <span style={{ color: '#C6A45B' }}>🐘 ARANYA LEGACY</span>
+              {/* Mobile Offerings Section */}
+              <div className="border-t border-[rgba(198,164,91,0.2)] mt-2 pt-2">
+                <button
+                  onClick={() => setOfferingsDropdownOpen(!offeringsDropdownOpen)}
+                  className="text-[#E8E4DA] hover:text-[#C6A45B] py-3 text-left transition-colors duration-200 flex items-center gap-1 w-full"
+                >
+                  Offerings
+                  <ChevronDown size={16} className={`transition-transform duration-200 ${offeringsDropdownOpen ? 'rotate-180' : ''}`} />
+                </button>
+                
+                {offeringsDropdownOpen && (
+                  <div className="pl-4">
+                    {offerings.map((offering) => (
+                      <button
+                        key={offering.id}
+                        onClick={() => scrollToSection(offering.id)}
+                        className="text-[#E8E4DA] hover:text-[#C6A45B] py-2 text-left transition-colors duration-200 flex items-center gap-2 w-full"
+                      >
+                        <span>{offering.icon}</span>
+                        <span>{offering.label}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <button
+                onClick={() => scrollToSection('about')}
+                className="text-[#E8E4DA] hover:text-[#C6A45B] py-3 text-left transition-colors duration-200 border-t border-[rgba(198,164,91,0.2)] mt-2 pt-4"
+              >
+                Philosophy
+              </button>
+              
+              <button
+                onClick={() => scrollToSection('contact')}
+                className="text-[#E8E4DA] hover:text-[#C6A45B] py-3 text-left transition-colors duration-200"
+              >
+                Contact
+              </button>
+            </nav>
           </div>
-          
-          <h2 className="mb-8">Publishing & Long-Term IP</h2>
-          
-          <p className="text-xl mb-8 leading-relaxed opacity-90">
-            Like the elephant — steady, wise, and built to endure — Aranya Legacy nurtures game worlds 
-            that transcend single releases and grow into lasting cultural touchstones.
-          </p>
-          
-          <p className="text-lg mb-12 opacity-80">
-            We partner with creators to build franchises that honor their vision while reaching global audiences. 
-            Our publishing approach combines creative freedom with strategic support for long-term growth.
-          </p>
+        )}
+      </header>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
-            <div className="p-8 rounded-xl" style={{ backgroundColor: 'rgba(14, 47, 38, 0.3)' }}>
-              <h4 className="mb-3" style={{ color: '#C6A45B' }}>Creator-First Publishing</h4>
-              <p className="opacity-80">Fair deals, transparent processes, and respect for creative vision.</p>
-            </div>
-            <div className="p-8 rounded-xl" style={{ backgroundColor: 'rgba(14, 47, 38, 0.3)' }}>
-              <h4 className="mb-3" style={{ color: '#C6A45B' }}>Franchise Building</h4>
-              <p className="opacity-80">Strategic expansion across sequels, spin-offs, and transmedia opportunities.</p>
-            </div>
-          </div>
-        </motion.div>
-      </div>
-    </section>
-  );
-}
+      {/* Hero Section */}
+      <section className="relative h-screen flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <ImageWithFallback
+            src="https://images.unsplash.com/photo-1558641445-766a7c7036d3"
+            alt="Forest Background"
+            className="w-full h-full object-cover blur-md opacity-40"
+          />
+          <div className="absolute inset-0 bg-gradient-to-br from-black via-[rgba(14,47,38,0.4)] to-black" />
+        </div>
 
-// About Founder Section
-function AboutSection() {
-  return (
-    <section className="relative py-32 px-6">
-      <div className="absolute inset-0 bg-gradient-to-b from-black via-[#111111] to-black" />
-      
-      <div className="relative z-10 max-w-4xl mx-auto text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-        >
-          <div className="w-32 h-32 mx-auto mb-8 rounded-full overflow-hidden" style={{ backgroundColor: 'rgba(198, 164, 91, 0.1)', border: '2px solid #C6A45B' }}>
-            <div className="w-full h-full flex items-center justify-center text-5xl">
-              🌳
-            </div>
-          </div>
-          
-          <h2 className="mb-6">Rooted in Vision</h2>
-          
-          <p className="text-xl mb-6 leading-relaxed opacity-90">
-            Aranya Interactive was founded on a simple belief: that games can be both globally ambitious and deeply rooted in cultural truth.
-          </p>
-          
-          <p className="text-lg opacity-80 max-w-3xl mx-auto leading-relaxed">
-            We're building a studio where Indian stories aren't sidelines — they're center stage. Where mythology meets modernity. 
-            Where every project, whether a mobile game or a AAA console title, carries the weight of authenticity and the polish of world-class craft.
-          </p>
-        </motion.div>
-      </div>
-    </section>
-  );
-}
+        <div className="relative z-20 flex flex-col items-center text-center px-6">
+          <motion.img
+            src={logo}
+            alt="Aranya Interactive Logo"
+            className="w-64 h-64 ml-[-5px] mr-[0px] mt-[0px] mb-[-5px]"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2, duration: 0.8 }}
+          />
 
-// Contact Section
-function ContactSection() {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    company: '',
-    message: '',
-  });
+          <motion.h1
+            className="text-5xl md:text-7xl mb-6"
+            style={{ fontFamily: 'Playfair Display, serif', color: '#C6A45B' }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.8 }}
+          >
+            Aranya Interactive
+          </motion.h1>
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Mock form submission
-    alert('Thank you for reaching out. We will get back to you soon.');
-    setFormData({ name: '', email: '', company: '', message: '' });
-  };
-
-  return (
-    <section className="relative py-32 px-6">
-      <div className="absolute inset-0 bg-[#0a0a0a]" />
-      
-      <div className="relative z-10 max-w-3xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <h2 className="mb-6">Enter the Forest</h2>
-          <p className="text-xl opacity-80">
-            Interested in partnering, publishing, or just want to say hello?
-          </p>
-        </motion.div>
-
-        <motion.form
-          onSubmit={handleSubmit}
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          viewport={{ once: true }}
-          className="space-y-6"
-        >
-          <div>
-            <label htmlFor="name" className="block mb-2" style={{ color: '#E8E4DA' }}>Name</label>
-            <input
-              type="text"
-              id="name"
-              required
-              value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              className="w-full px-4 py-3 rounded-lg border outline-none transition-all duration-300 focus:border-[#C6A45B]"
-              style={{
-                backgroundColor: 'rgba(14, 47, 38, 0.3)',
-                borderColor: 'rgba(198, 164, 91, 0.2)',
-                color: '#E8E4DA',
-              }}
-            />
-          </div>
-
-          <div>
-            <label htmlFor="email" className="block mb-2" style={{ color: '#E8E4DA' }}>Email</label>
-            <input
-              type="email"
-              id="email"
-              required
-              value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              className="w-full px-4 py-3 rounded-lg border outline-none transition-all duration-300 focus:border-[#C6A45B]"
-              style={{
-                backgroundColor: 'rgba(14, 47, 38, 0.3)',
-                borderColor: 'rgba(198, 164, 91, 0.2)',
-                color: '#E8E4DA',
-              }}
-            />
-          </div>
-
-          <div>
-            <label htmlFor="company" className="block mb-2" style={{ color: '#E8E4DA' }}>Company (Optional)</label>
-            <input
-              type="text"
-              id="company"
-              value={formData.company}
-              onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-              className="w-full px-4 py-3 rounded-lg border outline-none transition-all duration-300 focus:border-[#C6A45B]"
-              style={{
-                backgroundColor: 'rgba(14, 47, 38, 0.3)',
-                borderColor: 'rgba(198, 164, 91, 0.2)',
-                color: '#E8E4DA',
-              }}
-            />
-          </div>
-
-          <div>
-            <label htmlFor="message" className="block mb-2" style={{ color: '#E8E4DA' }}>Message</label>
-            <textarea
-              id="message"
-              required
-              rows={6}
-              value={formData.message}
-              onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-              className="w-full px-4 py-3 rounded-lg border outline-none transition-all duration-300 focus:border-[#C6A45B] resize-none"
-              style={{
-                backgroundColor: 'rgba(14, 47, 38, 0.3)',
-                borderColor: 'rgba(198, 164, 91, 0.2)',
-                color: '#E8E4DA',
-              }}
-            />
-          </div>
+          <motion.p
+            className="text-xl md:text-2xl mb-12 max-w-3xl font-[Playfair_Display]"
+            style={{ color: '#E8E4DA' }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.9, duration: 0.8 }}
+          >We are an Indie Game Studio<br />Bringing Indian Mythology, Art, and Culture to Interactive Worlds</motion.p>
 
           <motion.button
-            type="submit"
-            className="w-full py-4 rounded-lg flex items-center justify-center gap-2 transition-all duration-300"
-            style={{
-              backgroundColor: '#C6A45B',
-              color: '#111111',
-            }}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
+            onClick={() => scrollToSection('forest')}
+            className="px-8 py-4 border-2 border-[#2d5f4f] bg-[rgba(45,95,79,0.3)] text-[#C6A45B] rounded-lg hover:bg-[#2d5f4f] hover:border-[#3a7a62] transition-all duration-300"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.1, duration: 0.8 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
-            <span>Send Message</span>
-            <Send size={18} />
+            Explore the Forest
           </motion.button>
-        </motion.form>
-      </div>
-    </section>
-  );
-}
+        </div>
 
-// Footer
-function Footer() {
-  return (
-    <footer className="relative py-12 px-6 border-t" style={{ borderColor: 'rgba(198, 164, 91, 0.2)' }}>
-      <div className="absolute inset-0 bg-black" />
-      
-      <div className="relative z-10 max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-          <div>
-            <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Aranya Interactive</h3>
-            <p className="opacity-60">A Forest of Stories</p>
-          </div>
-          
-          <div className="flex gap-8">
-            <a href="#forest" className="opacity-80 hover:opacity-100 transition-opacity" style={{ color: '#C6A45B' }}>
-              The Forest
-            </a>
-            <a href="#" className="opacity-80 hover:opacity-100 transition-opacity" style={{ color: '#C6A45B' }}>
-              Careers
-            </a>
-            <a href="#" className="opacity-80 hover:opacity-100 transition-opacity" style={{ color: '#C6A45B' }}>
-              Press
-            </a>
+        <motion.div
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-[#C6A45B]"
+          animate={{ y: [0, 10, 0] }}
+          transition={{ repeat: Infinity, duration: 2 }}
+        >
+          <ChevronDown size={32} />
+        </motion.div>
+      </section>
+
+      {/* The Forest Section */}
+      <section id="forest" className="relative py-32 px-6 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-black via-[#0a0a0a] to-black opacity-95" />
+
+        <div className="relative z-10 max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-6xl mb-6" style={{ fontFamily: 'Playfair Display, serif', color: '#C6A45B' }}>The Forest (Aranya)</h2>
+            
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2, duration: 0.8 }}
+            className="text-center mb-12"
+          >
+            <h3 className="text-2xl md:text-3xl text-[#E8E4DA] p-[0px]" style={{ fontFamily: 'Playfair Display, serif' }}>Aranaya operates through four focused verticals:</h3>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            {[
+              {
+                icon: '🐅',
+                title: 'Aranya Apex',
+                subtitle: 'Premium PC & Console Titles',
+                description: 'Crafting immersive experiences across platforms that blend cutting-edge technology with deep cultural narratives.',
+              },
+              {
+                icon: '🐿',
+                title: 'Aranya Pocket',
+                subtitle: 'Mobile Cultural Experiences',
+                description: 'Bringing the richness of Indian traditions to mobile platforms with accessible, engaging gameplay.',
+              },
+              {
+                icon: '🦉',
+                title: 'Aranya Works',
+                subtitle: 'Porting & Co-Development Services',
+                description: 'Expert technical solutions for studios looking to expand their reach across platforms.',
+              },
+              {
+                icon: '🐘',
+                title: 'Aranya Guild',
+                subtitle: 'Creator Publishing & Partnerships',
+                description: 'Partnering with small teams to bring culturally resonant games to global audiences through strategic, distribution and development support.',
+              },
+            ].map((division, index) => (
+              <motion.div
+                key={division.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1, duration: 0.6 }}
+                whileHover={{ scale: 1.02, boxShadow: '0 0 30px rgba(198, 164, 91, 0.4)' }}
+                className="bg-[rgba(14,47,38,0.2)] backdrop-blur-md p-8 rounded-lg border border-transparent hover:border-[#C6A45B] transition-all duration-300"
+              >
+                <div className="text-5xl mb-4">{division.icon}</div>
+                <h3 className="text-2xl md:text-3xl mb-2" style={{ fontFamily: 'Playfair Display, serif', color: '#C6A45B' }}>
+                  {division.title}
+                </h3>
+                <p className="text-xl mb-4 text-[#E8E4DA]">{division.subtitle}</p>
+                <p className="text-[#E8E4DA] opacity-80">{division.description}</p>
+              </motion.div>
+            ))}
           </div>
         </div>
-        
-        <div className="mt-8 pt-8 border-t text-center opacity-60" style={{ borderColor: 'rgba(198, 164, 91, 0.1)' }}>
-          <p>© 2026 Aranya Interactive. All rights reserved.</p>
-        </div>
-      </div>
-    </footer>
-  );
-}
+      </section>
 
-// Main App Component
-export default function App() {
-  return (
-    <div className="min-h-screen" style={{ backgroundColor: '#0a0a0a' }}>
-      <HeroSection />
-      <ForestDivisions />
-      <ApexSection />
-      <PocketSection />
-      <WorksSection />
-      <LegacySection />
-      <AboutSection />
-      <ContactSection />
-      <Footer />
+      {/* Aranya Apex Section */}
+      <section id="apex" className="relative py-32 px-6 overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <ImageWithFallback
+            src="https://images.unsplash.com/photo-1558641445-766a7c7036d3"
+            alt="Forest Background"
+            className="w-full h-full object-cover blur-md opacity-30"
+          />
+          <div className="absolute inset-0 bg-gradient-to-br from-black via-[rgba(14,47,38,0.7)] to-black" />
+        </div>
+
+        <div className="relative z-10 max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="mb-16"
+          >
+            <div className="inline-block px-6 py-2 border border-[#C6A45B] rounded-full mb-6 text-[#C6A45B]">
+              🐅 ARANYA APEX
+            </div>
+            <h2 className="text-4xl md:text-6xl mb-6" style={{ fontFamily: 'Playfair Display, serif', color: '#C6A45B' }}>
+              Premium Cross-Platform Titles
+            </h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+            >
+              <h3 className="text-2xl md:text-3xl mb-4" style={{ fontFamily: 'Playfair Display, serif', color: '#C6A45B' }}>
+                Featured: Arjun: Drona's Ultimate Archer
+              </h3>
+              <p className="text-lg mb-4 leading-relaxed text-[#E8E4DA]">
+                Arjun is a skill-based survival action game inspired by the Mahabharata. Players wield precision archery to survive escalating waves of enemies, unlock powerful upgrades, and face challenging boss encounters in a mythic reimagining of ancient India.
+              </p>
+              <p className="text-sm mb-6 text-[#E8E4DA] opacity-70">
+                Currently under development, Alpha will be released on mobile first on May 2026
+              </p>
+              <div className="flex flex-wrap gap-3">
+                <span className="px-4 py-2 bg-[rgba(198,164,91,0.2)] border border-[#C6A45B] rounded-full text-sm">
+                  Action
+                </span>
+                <span className="px-4 py-2 bg-[rgba(198,164,91,0.2)] border border-[#C6A45B] rounded-full text-sm">
+                  PvE Survival
+                </span>
+                <span className="px-4 py-2 bg-[rgba(198,164,91,0.2)] border border-[#C6A45B] rounded-full text-sm">
+                  Skill-Based Combat
+                </span>
+                <span className="px-4 py-2 bg-[rgba(198,164,91,0.2)] border border-[#C6A45B] rounded-full text-sm">
+                  Single Player
+                </span>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="relative rounded-lg h-80 overflow-hidden border border-[rgba(198,164,91,0.3)]"
+            >
+              <Slider
+                dots={true}
+                infinite={true}
+                speed={500}
+                slidesToShow={1}
+                slidesToScroll={1}
+                autoplay={false}
+                arrows={true}
+                prevArrow={<CustomPrevArrow />}
+                nextArrow={<CustomNextArrow />}
+                className="arjun-carousel"
+              >
+                <div className="h-80">
+                  <ImageWithFallback
+                    src={arjunImage1}
+                    alt="Arjun Gameplay 1"
+                    className="w-full h-80 object-cover"
+                  />
+                </div>
+                <div className="h-80">
+                  <ImageWithFallback
+                    src={arjunImage2}
+                    alt="Arjun Gameplay 2"
+                    className="w-full h-80 object-cover"
+                  />
+                </div>
+                <div className="h-80">
+                  <ImageWithFallback
+                    src={arjunImage3}
+                    alt="Arjun Gameplay 3"
+                    className="w-full h-80 object-cover"
+                  />
+                </div>
+              </Slider>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Aranya Pocket Section */}
+      <section id="pocket" className="relative py-32 px-6 overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <ImageWithFallback
+            src="https://images.unsplash.com/photo-1702943546945-9ea68200e74d"
+            alt="Indian Wedding Background"
+            className="w-full h-full object-cover blur-lg opacity-20"
+          />
+          <div className="absolute inset-0 bg-gradient-to-br from-black via-[rgba(14,47,38,0.8)] to-black" />
+        </div>
+
+        <div className="relative z-10 max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="mb-16"
+          >
+            <div className="inline-block px-6 py-2 border border-[#C6A45B] rounded-full mb-6 text-[#C6A45B]">
+              🐿 ARANYA POCKET
+            </div>
+            <h2 className="text-4xl md:text-6xl mb-6" style={{ fontFamily: 'Playfair Display, serif', color: '#C6A45B' }}>
+              Mobile Cultural Experiences
+            </h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                title: 'Vivah: A Bridal Odyssey',
+                description: 'Experience the complete journey of an Indian bride — from outfit selection and ceremony planning to destination décor and celebration nights.',
+                tags: ['Simulation', 'Roleplay', 'iOS/Android'],
+                image: {
+                  url: vivahImage,
+                  alt: 'Luxury Indian bride with vibrant lehenga',
+                },
+              },
+              {
+                title: 'Tholubommalata: Tales in Shadow',
+                description: 'Design your stage, command intricate shadow puppets, and bring legendary stories to life in this interactive cultural theatre experience inspired by India\'s traditional leather puppetry.',
+                tags: ['Narrative', 'Cultural', 'iOS/Android'],
+                image: {
+                  url: tholubommalataImage,
+                  alt: 'Traditional shadow puppetry theater',
+                },
+              },
+              {
+                title: 'Shaadi Tycoon',
+                description: 'Build and manage spectacular Indian weddings — from venues and vendors to décor and guest experience — growing from small ceremonies to grand celebrations.',
+                tags: ['Strategy', 'Management', 'iOS/Android'],
+                image: {
+                  url: shaadiTycoonImage,
+                  alt: 'Indian wedding mandap decoration',
+                },
+              },
+            ].map((game, index) => (
+              <motion.div
+                key={game.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1, duration: 0.6 }}
+                className="bg-[rgba(14,47,38,0.2)] backdrop-blur-md rounded-lg border border-transparent hover:border-[#C6A45B] transition-all duration-300 overflow-hidden"
+              >
+                <div className="aspect-video overflow-hidden">
+                  <ImageWithFallback
+                    src={game.image.url}
+                    alt={game.image.alt}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="p-6">
+                  <h3 className="text-xl md:text-2xl mb-3" style={{ fontFamily: 'Playfair Display, serif', color: '#C6A45B' }}>
+                    {game.title}
+                  </h3>
+                  <p className="text-sm md:text-base mb-4 leading-relaxed text-[#E8E4DA]">
+                    {game.description}
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {game.tags.map((tag) => (
+                      <span key={tag} className="px-3 py-1 bg-[rgba(198,164,91,0.2)] border border-[#C6A45B] rounded-full text-xs text-[#C6A45B]">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Aranya Works Section */}
+      <section id="works" className="relative py-32 px-6 bg-[#0a0a0a]">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="mb-16"
+          >
+            <div className="inline-block px-6 py-2 border border-[#C6A45B] rounded-full mb-6 text-[#C6A45B]">
+              🦉 ARANYA WORKS
+            </div>
+            <h2 className="text-4xl md:text-6xl mb-6" style={{ fontFamily: 'Playfair Display, serif', color: '#C6A45B' }}>
+              Porting & Co-Development Services
+            </h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                title: 'Platform Porting',
+                description: 'Expert porting services from PC to console, mobile to PC, and every platform in between. We ensure your game performs optimally across all target platforms.',
+              },
+              {
+                title: 'Co-Development',
+                description: 'Partner with us to expand your development capacity. Our experienced team integrates seamlessly with your workflow to help bring your vision to life.',
+              },
+              {
+                title: 'Technical Optimization',
+                description: 'Performance optimization, engine-specific expertise, and technical consultation to ensure your game runs smoothly and looks stunning.',
+              },
+            ].map((service, index) => (
+              <motion.div
+                key={service.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1, duration: 0.6 }}
+                whileHover={{ scale: 1.05 }}
+                className="bg-[rgba(14,47,38,0.2)] backdrop-blur-md p-8 rounded-lg border border-transparent hover:border-[#C6A45B] transition-all duration-300"
+              >
+                <h3 className="text-2xl mb-4" style={{ fontFamily: 'Playfair Display, serif', color: '#C6A45B' }}>
+                  {service.title}
+                </h3>
+                <p className="text-[#E8E4DA] opacity-80">{service.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Aranya Guild Section */}
+      <section id="guild" className="relative py-32 px-6 overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <ImageWithFallback
+            src="https://images.unsplash.com/photo-1759520582331-8b62a819a452"
+            alt="Elephant Background"
+            className="w-full h-full object-cover blur-md opacity-20"
+          />
+          <div className="absolute inset-0 bg-gradient-to-br from-black via-[rgba(14,47,38,0.8)] to-black" />
+        </div>
+
+        <div className="relative z-10 max-w-5xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="mb-16"
+          >
+            <div className="inline-block px-6 py-2 border border-[#C6A45B] rounded-full mb-6 text-[#C6A45B]">
+              🐘 ARANYA GUILD
+            </div>
+            <h2 className="text-4xl md:text-6xl mb-8" style={{ fontFamily: 'Playfair Display, serif', color: '#C6A45B' }}>
+              Creator Publishing & Partnerships
+            </h2>
+            <p className="text-base md:text-lg mb-8 text-[#C6A45B] italic">
+              Aranya Guild is a planned publishing initiative that will launch in a future phase of our studio's growth.
+            </p>
+            <p className="text-lg md:text-xl max-w-3xl leading-relaxed text-[#E8E4DA]">
+              Aranya Guild plans to partner with independent studios and small teams to bring culturally resonant games to global audiences.
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2, duration: 0.8 }}
+            className="mb-16"
+          >
+            <h3 className="text-2xl md:text-3xl mb-8" style={{ fontFamily: 'Playfair Display, serif', color: '#C6A45B' }}>
+              To Support:
+            </h3>
+            <div className="grid md:grid-cols-3 gap-6">
+              <div className="bg-[rgba(14,47,38,0.2)] backdrop-blur-md p-6 rounded-lg border border-[rgba(198,164,91,0.3)] hover:border-[#C6A45B] transition-all duration-300">
+                <p className="text-base md:text-lg text-[#E8E4DA]">
+                  Market positioning & launch strategy
+                </p>
+              </div>
+              <div className="bg-[rgba(14,47,38,0.2)] backdrop-blur-md p-6 rounded-lg border border-[rgba(198,164,91,0.3)] hover:border-[#C6A45B] transition-all duration-300">
+                <p className="text-base md:text-lg text-[#E8E4DA]">
+                  Platform distribution & release readiness
+                </p>
+              </div>
+              <div className="bg-[rgba(14,47,38,0.2)] backdrop-blur-md p-6 rounded-lg border border-[rgba(198,164,91,0.3)] hover:border-[#C6A45B] transition-all duration-300">
+                <p className="text-base md:text-lg text-[#E8E4DA]">
+                  Scalable IP growth beyond a single title
+                </p>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* About Section */}
+      <section id="about" className="relative py-32 px-6">
+        <div className="absolute inset-0 bg-gradient-to-br from-black via-[#111111] to-black" />
+
+        <div className="relative z-10 max-w-4xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="mb-12"
+          >
+            <div className="w-32 h-32 mx-auto rounded-full border-4 border-[#C6A45B] flex items-center justify-center text-6xl bg-[rgba(14,47,38,0.3)] backdrop-blur-md">
+              🌳
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2, duration: 0.8 }}
+          >
+            <h2 className="text-4xl md:text-6xl mb-8" style={{ fontFamily: 'Playfair Display, serif', color: '#C6A45B' }}>
+              Rooted in Vision
+            </h2>
+            <p className="text-lg md:text-xl leading-relaxed mb-6">
+              At Aranya Interactive, we believe that the most compelling games are rooted in culture, identity, and authenticity. Like a forest ecosystem where each element supports the whole, our four divisions work in harmony to create, preserve, and share interactive experiences that matter.
+            </p>
+            <p className="text-lg md:text-xl leading-relaxed">
+              We are not just making games—we are building worlds where Indian mythology, art, and culture thrive in interactive form, reaching players across the globe while staying true to our roots.
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section id="contact" className="relative py-32 px-6 bg-[#0a0a0a]">
+        <div className="max-w-3xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-4xl md:text-6xl mb-6" style={{ fontFamily: 'Playfair Display, serif', color: '#C6A45B' }}>
+              Enter the Forest
+            </h2>
+            <p className="text-lg mb-4">Let's create something extraordinary together</p>
+            <a 
+              href="mailto:hello@aranyainteractive.com" 
+              className="text-[#C6A45B] hover:text-[#d4b46d] transition-colors duration-200 text-lg md:text-xl"
+            >
+              hello@aranyainteractive.com
+            </a>
+          </motion.div>
+
+          <motion.form
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2, duration: 0.8 }}
+            className="space-y-6"
+            onSubmit={(e) => e.preventDefault()}
+          >
+            <div>
+              <label htmlFor="name" className="block mb-2 text-[#C6A45B]">
+                Name
+              </label>
+              <input
+                type="text"
+                id="name"
+                className="w-full px-4 py-3 bg-[rgba(14,47,38,0.3)] border border-[rgba(198,164,91,0.3)] rounded-lg focus:border-[#C6A45B] focus:outline-none text-[#E8E4DA] transition-colors duration-200"
+                placeholder="Your name"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="email" className="block mb-2 text-[#C6A45B]">
+                Email
+              </label>
+              <input
+                type="email"
+                id="email"
+                className="w-full px-4 py-3 bg-[rgba(14,47,38,0.3)] border border-[rgba(198,164,91,0.3)] rounded-lg focus:border-[#C6A45B] focus:outline-none text-[#E8E4DA] transition-colors duration-200"
+                placeholder="your.email@example.com"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="company" className="block mb-2 text-[#C6A45B]">
+                Company <span className="text-[#E8E4DA] opacity-50">(optional)</span>
+              </label>
+              <input
+                type="text"
+                id="company"
+                className="w-full px-4 py-3 bg-[rgba(14,47,38,0.3)] border border-[rgba(198,164,91,0.3)] rounded-lg focus:border-[#C6A45B] focus:outline-none text-[#E8E4DA] transition-colors duration-200"
+                placeholder="Your company"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="message" className="block mb-2 text-[#C6A45B]">
+                Message
+              </label>
+              <textarea
+                id="message"
+                rows={6}
+                className="w-full px-4 py-3 bg-[rgba(14,47,38,0.3)] border border-[rgba(198,164,91,0.3)] rounded-lg focus:border-[#C6A45B] focus:outline-none text-[#E8E4DA] transition-colors duration-200 resize-none"
+                placeholder="Tell us about your project or inquiry..."
+              />
+            </div>
+
+            <motion.button
+              type="submit"
+              className="w-full px-8 py-4 bg-[#C6A45B] text-[#0E2F26] rounded-lg flex items-center justify-center gap-3 hover:bg-[#d4b46d] transition-colors duration-300"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <span className="text-lg font-semibold">Send Message</span>
+              <Send size={20} />
+            </motion.button>
+          </motion.form>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-black py-12 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-8">
+            <div>
+              <h3 className="text-2xl mb-2" style={{ fontFamily: 'Playfair Display, serif', color: '#C6A45B' }}>
+                Aranya Interactive
+              </h3>
+              <p className="text-[#E8E4DA] opacity-70">A Forest of Stories</p>
+            </div>
+
+            <div className="flex gap-8">
+              <button onClick={() => scrollToSection('forest')} className="text-[#E8E4DA] hover:text-[#C6A45B] transition-colors duration-200">
+                The Forest
+              </button>
+              <a href="#" className="text-[#E8E4DA] hover:text-[#C6A45B] transition-colors duration-200">
+                Careers
+              </a>
+              <a href="#" className="text-[#E8E4DA] hover:text-[#C6A45B] transition-colors duration-200">
+                Press
+              </a>
+            </div>
+          </div>
+
+          <div className="border-t border-[rgba(198,164,91,0.2)] pt-8 text-center text-[#E8E4DA] opacity-60">
+            <p>© 2025 Aranya Interactive. All rights reserved.</p>
+          </div>
+        </div>
+      </footer>
     </div>
+  );
+}
+
+// Custom Arrow Components for Slider
+function CustomPrevArrow(props: any) {
+  const { className, style, onClick } = props;
+  return (
+    <button
+      className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-[rgba(198,164,91,0.7)] hover:bg-[rgba(198,164,91,0.9)] flex items-center justify-center transition-all duration-300"
+      onClick={onClick}
+    >
+      <ChevronLeft size={24} color="#E8E4DA" />
+    </button>
+  );
+}
+
+function CustomNextArrow(props: any) {
+  const { className, style, onClick } = props;
+  return (
+    <button
+      className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-[rgba(198,164,91,0.7)] hover:bg-[rgba(198,164,91,0.9)] flex items-center justify-center transition-all duration-300"
+      onClick={onClick}
+    >
+      <ChevronRight size={24} color="#E8E4DA" />
+    </button>
   );
 }
