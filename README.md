@@ -1,7 +1,7 @@
 
-  # Cinematic Game Studio Website
+  # Cinematic Game Studio Website (Copy)
 
-  This is a code bundle for Cinematic Game Studio Website. The original project is available at https://www.figma.com/design/kkEQBgVXVOakZZEmlWeqBC/Cinematic-Game-Studio-Website.
+  This is a code bundle for Cinematic Game Studio Website (Copy). The original project is available at https://www.figma.com/design/iHOsnrMFowzoC4aQ1IBZFj/Cinematic-Game-Studio-Website--Copy-.
 
   ## Running the code
 
