@@ -1,7 +1,7 @@
 
-  # Cinematic Game Studio Website (Copy)
+  # Premium Animated Console Website (Copy)
 
-  This is a code bundle for Cinematic Game Studio Website (Copy). The original project is available at https://www.figma.com/design/iHOsnrMFowzoC4aQ1IBZFj/Cinematic-Game-Studio-Website--Copy-.
+  This is a code bundle for Premium Animated Console Website (Copy). The original project is available at https://www.figma.com/design/eROBDBzrWy97dHZql6YtHR/Premium-Animated-Console-Website--Copy-.
 
   ## Running the code
 
